@@ -10,7 +10,6 @@ const remainingText = document.getElementById("remaining");
 const computerScoreEl = document.getElementById("computer-score");
 const myScoreEl = document.getElementById("my-score");
 
-
 const instrumentMap = {
   2: { label: "Cash", emoji: "💵" },
   3: { label: "Savings Account", emoji: "🏦" },
@@ -26,3 +25,23 @@ const instrumentMap = {
   KING: { label: "Diversified Portfolio", emoji: "🎯" },
   ACE: { label: "Inflation Hedge", emoji: "🛡️" },
 };
+
+function handleClick() {
+  fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
+    .then((res) => res.json())
+    .then((data) => {
+      remainingText.textContent = `Remaining rounds: ${data.remaining}`;
+      deckId = data.deck_id;
+
+      // Reset scores and UI for fresh simulation
+      computerScore = 0;
+      myScore = 0;
+      computerScoreEl.textContent = "Economy: 0";
+      myScoreEl.textContent = "Wealth Preserved: 0";
+      header.textContent = "Inflation War";
+      drawCardBtn.disabled = false;
+      cardsContainer.children[0].innerHTML = "";
+      cardsContainer.children[1].innerHTML = "";
+    });
+}
+
