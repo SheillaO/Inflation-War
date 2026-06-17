@@ -148,16 +148,55 @@ Using `indexOf` on a sorted string array for comparison is a pattern that appear
 ---
  
 ## Roadmap
- 
-| Feature | Technical requirement |
-|---------|----------------------|
-| **Instrument detail modal** | On card click, fetch `/id?hex=...` from The Color API or a financial data source for instrument description |
-| **Round history log** | Append each round result to an array; render as a scrollable timeline below the cards |
-| **Difficulty modes** | Bias the shuffle toward low-value cards (easy) or high-value cards (hard) using the API's `?cards=` parameter |
-| **Localised inflation scenarios** | Swap `instrumentMap` labels based on a country selector — same engine, different economic context |
-| **Win probability display** | Calculate and display remaining high-card ratio in the deck as a live odds indicator |
- 
+
+Prioritized by effort-to-impact ratio — what's worth building next, and why.
+
+### 🟢 Next Up (Low effort, high impact)
+
+**Round History Log**
+Currently, each round's result flashes in the header and disappears. A scrollable log turns single-round feedback into a visible pattern — exactly the kind of "see your behavior over time" insight that makes financial education stick.
+
+```js
+// Append after each round in determineCardWinner()
+const roundLog = [];
+roundLog.push({ 
+  round: roundLog.length + 1, 
+  winner: card1ValueIndex > card2ValueIndex ? "Economy" : "You",
+  instrument1: instrumentMap[card1.value].label,
+  instrument2: instrumentMap[card2.value].label
+});
+```
+Render as a simple `<ul>` below the cards. No new API calls, no new state shape — just an array that grows.
+
 ---
+
+**Win Probability Display**
+The Deck of Cards API returns `remaining` on every draw. Since you know the full deck composition (4 of each value), you can calculate "how many high-value cards are left" and show a live odds indicator — e.g. *"68% of remaining cards rank below Index Fund."*
+
+This is a pure-math feature: no new endpoints, just arithmetic on data you already have.
+
+---
+
+### 🟡 Worth Doing (Medium effort, strong differentiation)
+
+**Difficulty Modes**
+The API supports a `?cards=` parameter for partial decks. Pre-building a "recession deck" (weighted toward low-value cards) versus a "boom deck" (weighted high) lets you simulate different economic conditions — which ties directly back to the project's actual thesis instead of just being a difficulty slider.
+
+**Localised Inflation Scenarios**
+Swap `instrumentMap` labels based on a country selector (Nigeria, Argentina, Turkey, Kenya — the markets your README already calls out). Same `valueOptions` array, same scoring engine, different label set per country. This is the strongest "architecture flex" item on the list — it proves the separation-of-concerns design actually pays off when you extend it.
+
+---
+
+### 🔵 Later (Higher effort, nice-to-have)
+
+**Instrument Detail Modal**
+On card click, show a short explainer of why that instrument ranks where it does. Needs either static copy (easy) or a fetched description (more API work, less payoff at this stage).
+
+---
+
+### Why this order
+
+The first two items use data you're *already fetching* — they're UI work, not new architecture. The localisation feature is the one I'd actually point to in an interview, because it's the cleanest proof that decoupling `instrumentMap` from the scoring engine wasn't just a tidy README claim — it's a real extension point.
  
 ## Run Locally
  
