@@ -2,6 +2,9 @@
  
 **A gamified financial literacy simulator that teaches inflation resilience through head-to-head card battles; no financial knowledge required to play, but you'll have some by the end.**
 
+<img width="1918" height="862" alt="Inflation War" src="https://github.com/user-attachments/assets/2a95a4ce-37f4-42f3-aa4c-9c4a5dcd8125" />
+
+
 ---
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://inflationwar.netlify.app/)
