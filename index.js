@@ -45,29 +45,74 @@ function handleClick() {
     });
 }
 
-newDeckBtn.addEventListener("click", handleClick)
- 
- 
+newDeckBtn.addEventListener("click", handleClick);
+
 // ─── Draw cards (identical fetch and logic, updated render + strings) ─────────
 drawCardBtn.addEventListener("click", () => {
-    fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
-        .then(res => res.json())
-        .then(data => {
-            remainingText.textContent = `Remaining rounds: ${data.remaining}`
- 
-            // Look up instrument for each card — does not affect card.value
-            const instrument0 = instrumentMap[data.cards[0].value]
-            const instrument1 = instrumentMap[data.cards[1].value]
+  fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
+    .then((res) => res.json())
+    .then((data) => {
+      remainingText.textContent = `Remaining rounds: ${data.remaining}`;
 
-            cardsContainer.children[0].innerHTML = `
+      // Look up instrument for each card — does not affect card.value
+      const instrument0 = instrumentMap[data.cards[0].value];
+      const instrument1 = instrumentMap[data.cards[1].value];
+
+      cardsContainer.children[0].innerHTML = `
                 <img src=${data.cards[0].image} class="card" />
                 <span class="instrument-label">${instrument0.emoji} ${instrument0.label}</span>
-            `
-            cardsContainer.children[1].innerHTML = `
+            `;
+      cardsContainer.children[1].innerHTML = `
                 <img src=${data.cards[1].image} class="card" />
                 <span class="instrument-label">${instrument1.emoji} ${instrument1.label}</span>
-            `
- 
-            // Identical call to determineCardWinner
-            const winnerText = determineCardWinner(data.cards[0], data.cards[1])
-            header.textContent = winnerText
+            `;
+
+      // Identical call to determineCardWinner
+      const winnerText = determineCardWinner(data.cards[0], data.cards[1]);
+      header.textContent = winnerText;
+
+      if (data.remaining === 0) {
+        drawCardBtn.disabled = true;
+        if (computerScore > myScore) {
+          header.textContent = "💸 The economy outpaced you. Inflation won.";
+        } else if (myScore > computerScore) {
+          header.textContent = "🛡️ You beat inflation! Wealth preserved.";
+        } else {
+          header.textContent = "⚖️ You broke even — inflation drew.";
+        }
+      }
+    });
+});
+
+function determineCardWinner(card1, card2) {
+  const valueOptions = [
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "JACK",
+    "QUEEN",
+    "KING",
+    "ACE",
+  ];
+
+  const card1ValueIndex = valueOptions.indexOf(card1.value);
+  const card2ValueIndex = valueOptions.indexOf(card2.value);
+
+  if (card1ValueIndex > card2ValueIndex) {
+    computerScore++;
+    computerScoreEl.textContent = `Economy: ${computerScore}`;
+    return "📉 Economy wins this round!";
+  } else if (card1ValueIndex < card2ValueIndex) {
+    myScore++;
+    myScoreEl.textContent = `Wealth Preserved: ${myScore}`;
+    return "💰 Wealth preserved this round!";
+  } else {
+    return "⚖️ Inflation stalemate!";
+  }
+}
