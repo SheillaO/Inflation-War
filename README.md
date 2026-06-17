@@ -164,7 +164,7 @@ Using `indexOf` on a sorted string array for comparison is a pattern that appear
 No install required.
  
 ```bash
-git clone https://github.com/yourusername/inflation-war
+git clone https://github.com/SheillaO/Inflation-War
 cd inflation-war
 open index.html
 ```
