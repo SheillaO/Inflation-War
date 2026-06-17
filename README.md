@@ -169,5 +169,14 @@ cd inflation-war
 open index.html
 ```
 ---
+
+**Sheilla O.**  
+Product-Minded Developer | Nairobi, Kenya 🇰🇪
+ 
+Building at the intersection of social infrastructure, privacy, and developer tools.
+ 
+💼 [LinkedIn](https://www.linkedin.com/in/sheillaolga/) • 🐙 [GitHub](https://github.com/SheillaO/Inflation-War)
+ 
+---
  
 *The card ranking — Cash at 2, Inflation Hedge at Ace — is not arbitrary. It reflects the actual hierarchy of inflation resilience as documented by the IMF and World Bank. The game teaches this hierarchy through repetition, not instruction.*
