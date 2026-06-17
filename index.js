@@ -45,3 +45,29 @@ function handleClick() {
     });
 }
 
+newDeckBtn.addEventListener("click", handleClick)
+ 
+ 
+// ─── Draw cards (identical fetch and logic, updated render + strings) ─────────
+drawCardBtn.addEventListener("click", () => {
+    fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
+        .then(res => res.json())
+        .then(data => {
+            remainingText.textContent = `Remaining rounds: ${data.remaining}`
+ 
+            // Look up instrument for each card — does not affect card.value
+            const instrument0 = instrumentMap[data.cards[0].value]
+            const instrument1 = instrumentMap[data.cards[1].value]
+
+            cardsContainer.children[0].innerHTML = `
+                <img src=${data.cards[0].image} class="card" />
+                <span class="instrument-label">${instrument0.emoji} ${instrument0.label}</span>
+            `
+            cardsContainer.children[1].innerHTML = `
+                <img src=${data.cards[1].image} class="card" />
+                <span class="instrument-label">${instrument1.emoji} ${instrument1.label}</span>
+            `
+ 
+            // Identical call to determineCardWinner
+            const winnerText = determineCardWinner(data.cards[0], data.cards[1])
+            header.textContent = winnerText
